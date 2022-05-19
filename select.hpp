@@ -38,4 +38,22 @@ public:
     virtual bool select(const std::string& s) const = 0;
 };
 
+class Select_Contains : public Select_Column {
+  public:
+    int row;
+    Select_Contains(const Spreadsheet sheet, const std::string& c, const std::string& r): Select_Column(&sheet, c){
+        row = 0;
+    }
+    virtual bool select (const std::string& s) const{
+        return false;
+    }
+};
+
+/*class Select_Not : public Select {
+};
+class Select_And : public Select {
+};
+class Select_Or : public Select {
+};
+*/
 #endif //__SELECT_HPP__
