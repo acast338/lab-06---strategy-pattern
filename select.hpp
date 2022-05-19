@@ -39,17 +39,27 @@ public:
 };
 
 class Select_Contains : public Select_Column {
+  private:
+    std::string input;
   public:
-    int row;
-    Select_Contains(const Spreadsheet sheet, const std::string& c, const std::string& r): Select_Column(&sheet, c){
-        row = 0;
+    Select_Contains(const Spreadsheet* sheet_, const std::string& name, const std::string& s): Select_Column(sheet_, name){
+        input = s;
     }
+
     virtual bool select (const std::string& s) const{
-        return false;
+        bool isFound = false;
+        int index;
+        for(i = 0; i < s.size(); ++i){
+            if(index = s.find(input, i) != string::npos)){
+                isFound = true;
+            }
+        }
+        return isFound;
     }
 };
 
-/*class Select_Not : public Select {
+/*
+class Select_Not : public Select {
 };
 class Select_And : public Select {
 };
