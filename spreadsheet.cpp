@@ -19,7 +19,7 @@ void Spreadsheet::print_selection(std::ostream& out) const{
     // if select pointer is null, all rows should be printed
     for(int i = 0; i < data.size(); i++){
         for(int j = 0; j < data[i].size(); j++) {
-             out << data[i][j] << " ";
+             out << data.at(i).at(j) << " ";
         }
         out << std::endl;
     }
