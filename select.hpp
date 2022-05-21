@@ -2,7 +2,7 @@
 #define __SELECT_HPP__
 
 #include <cstring>
-
+#include "spreadsheet.hpp"
 class Select
 {
 public:
@@ -38,4 +38,71 @@ public:
     virtual bool select(const std::string& s) const = 0;
 };
 
+class Select_Contains : public Select_Column
+{
+private:
+        std::string search;
+public:
+        Select_Contains(const Spreadsheet* sheet,const  std::string& col,const std::string& stringToMatch) : Select_Column(sheet, col), search(stringToMatch) {}
+
+        bool select(const std::string& stringToMatch) const
+        {
+                if (stringToMatch.find(search) != std::string::npos)
+                {
+                        return 1;
+                }
+                return 0;
+        }
+};
+
+
+class Select_Not: public Select
+{
+private:
+  Select* strat;
+public:
+  ~Select_Not() {delete strat; }
+  Select_Not(Select* strategy) {strat = strategy; }
+    bool select(const Spreadsheet* sheet, int row)const{
+   return !strat->select(sheet, row);
+  }
+};
+
+class Select_Or : public Select
+{
+private:
+	Select* strat1;
+	Select* strat2;
+public:
+	~Select_Or() { delete strat1; delete strat2; }
+	Select_Or(Select* strategy1, Select* strategy2)
+	{
+		strat1 = strategy1;
+		strat2 = strategy2;
+	}
+
+	bool select(const Spreadsheet* sheet, int row) const
+	{
+		return strat1->select(sheet, row) || strat2->select(sheet, row);
+	}
+};
+
+class Select_And : public Select
+{
+private:
+	Select* strat1;
+	Select* strat2;
+public:
+	~Select_And() { delete strat1; delete strat2; }
+	Select_And(Select* strategy1, Select* strategy2)
+	{
+		strat1 = strategy1;
+		strat2 = strategy2;
+	}
+
+	bool select(const Spreadsheet* sheet, int row) const
+	{
+		return (strat1->select(sheet, row) && strat2->select(sheet, row));
+	}
+};
 #endif //__SELECT_HPP__
