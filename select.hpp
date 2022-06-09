@@ -49,11 +49,11 @@ class Select_Contains : public Select_Column {
     virtual bool select (const std::string& s) const{
         bool isFound = false;
         int index;
-        for(i = 0; i < s.size(); ++i){
-            if(index = s.find(input, i) != string::npos)){
+        //for(int i = 0; i < s.size(); ++i){
+            if(index = s.find(s.begin(), s.end(), input) != std::string::npos){
                 isFound = true;
             }
-        }
+        //}
         return isFound;
     }
 };
